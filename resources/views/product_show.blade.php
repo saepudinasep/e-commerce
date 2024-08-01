@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Warung Coding | E-Commerce</title>
+    <title>Products | Warung Coding</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -25,7 +25,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="home.php">Home</a>
+                        <a class="nav-link" href="/">Home</a>
                     </li>
                     @if (Auth::check())
                         @php
@@ -45,7 +45,7 @@
                             </li>
                         @elseif ($userRole === 'pelanggan')
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('product') }}">Product</a>
+                                <a class="nav-link active" aria-current="page" href="{{ route('product') }}">Product</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="">Keranjang</a>
@@ -53,7 +53,7 @@
                         @endif
                     @else
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('product') }}">Product</a>
+                            <a class="nav-link active" aria-current="page" href="{{ route('product') }}">Product</a>
                         </li>
                     @endif
 
@@ -92,60 +92,65 @@
     </nav>
     <!-- End Navbar -->
 
-    <div class="container mt-4 mb-4">
-        <div class="row">
-            <div class="col-md-4">
-                <img src="/assets/img/home.jpg" alt="Guitar" srcset="" class="img-home" />
-            </div>
-            <div class="col-md-8">
-                <h1 class="font-title">Mukicik</h1>
-                <h3>
-                    An innovative music selling store with competitive prices <br />
-                    It's never this cheap to shop in music !
-                </h3>
-                <a href="register.php" class="btn btn-primary btn-lg" type="button">
-                    Be a New Member
-                </a>
-            </div>
-        </div>
-    </div>
 
-    <!-- Menampilkan data product tertinggi -->
-    <div class="container">
-        <h2 class="mb-3">Top 6 Products</h2>
-        <!-- Product cards -->
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="productContainer">
-            @foreach ($products as $product)
-                <div class="col-md-2 mb-4 product-card">
-                    <div class="card shadow-sm">
-                        <img src="{{ $product->image }}" class="card-img-top img-product" alt="{{ $product->name }}">
-                        <div class="card-body">
-                            <a href="{{ route('product.show', $product->id) }}" class="text-decoration-none">
-                                <h5 class="card-title">{{ $product->name }}</h5>
-                            </a>
-                            {{-- <p class="card-text">{{ $product->CategoryName }}</p> --}}
-                            <p class="card-text color-star">{{ $product->rating }} <i class="bi bi-star-fill"></i>
-                            </p>
-                            <p class="card-text">Rp. {{ number_format($product->price, 0, ',', '.') }}</p>
-                        </div>
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Product Detail Card -->
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <img src="{{ $product->image }}" class="card-img-top" alt="{{ $product->name }}">
+                    <div class="card-body">
+                        <h1 class="card-title">{{ $product->name }}</h1>
+                        <p class="card-text">{{ $product->description }}</p>
+                        <p class="card-text"><strong>Rp. {{ number_format($product->price, 0, ',', '.') }}</strong></p>
+
+                        <!-- Add to Cart Form -->
+                        <form action="" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="quantity" class="form-label">Quantity</label>
+                                <input type="number" class="form-control" id="quantity" name="quantity" value="1"
+                                    min="1" required>
+                            </div>
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <button type="submit" class="btn btn-success">Add to Cart</button>
+                        </form>
                     </div>
                 </div>
-            @endforeach
+            </div>
 
+            <!-- Related Products and Back Button -->
+            <div class="col-md-4">
+                <!-- Back Button -->
+                <a href="{{ route('product') }}" class="btn btn-secondary">Back to Products</a>
+
+                <!-- Related Products -->
+                <h4 class="mb-3 mt-3">Related Products</h4>
+                <div class="row row-cols-1 row-cols-md-2 g-3">
+                    @foreach ($relatedProducts as $relatedProduct)
+                        <div class="col-md-6">
+                            <div class="card">
+                                <img src="{{ $relatedProduct->image }}" class="card-img-top"
+                                    alt="{{ $relatedProduct->name }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $relatedProduct->name }}</h5>
+                                    <p class="card-text">Rp. {{ number_format($relatedProduct->price, 0, ',', '.') }}
+                                    </p>
+                                    <a href="{{ route('product.show', $relatedProduct->id) }}"
+                                        class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
     </div>
+
 
     <footer class="pt-3 mt-4 text-body-secondary border-top">
         <div class="container">&copy; {{ date('Y') }} - Mukicik</div>
     </footer>
-
-    <script>
-        function confirmLogout() {
-            if (confirm("Are you sure you want to logout?")) {
-                document.getElementById('logout-form').submit();
-            }
-        }
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
