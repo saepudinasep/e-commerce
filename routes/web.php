@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartsController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\RegisterController;
 use App\Models\Products;
@@ -36,6 +37,14 @@ Route::get('/', function () {
 });
 
 
-// Halaman Utama dan Produk
-Route::get('/product', [ProductsController::class, 'index'])->name('product');
-Route::get('/product/{id}', [ProductsController::class, 'show'])->name('product.show');
+Route::middleware(['auth'])->group(function () {
+    // Halaman Produk
+    Route::get('/product', [ProductsController::class, 'index'])->name('product');
+    Route::get('/product/{id}', [ProductsController::class, 'show'])->name('product.show');
+
+    // Keranjang Belanja
+    Route::get('/cart', [CartsController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add/{productId}', [CartsController::class, 'add'])->name('cart.add');
+    Route::post('/cart/update/{itemId}', [CartsController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/remove/{itemId}', [CartsController::class, 'remove'])->name('cart.remove');
+});

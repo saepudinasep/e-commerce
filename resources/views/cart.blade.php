@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Products | Warung Coding</title>
+    <title>Carts | Warung Coding</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -45,15 +45,16 @@
                             </li>
                         @elseif ($userRole === 'pelanggan')
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="{{ route('product') }}">Product</a>
+                                <a class="nav-link" href="{{ route('product') }}">Product</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="">Keranjang</a>
+                                <a class="nav-link active" aria-current="page"
+                                    href="{{ route('cart.index') }}">Keranjang</a>
                             </li>
                         @endif
                     @else
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ route('product') }}">Product</a>
+                            <a class="nav-link" href="{{ route('product') }}">Product</a>
                         </li>
                     @endif
 
@@ -94,57 +95,74 @@
 
 
     <div class="container mt-5">
-        <div class="row">
-            <!-- Product Detail Card -->
-            <div class="col-md-8">
-                <div class="card shadow-sm">
-                    <img src="{{ $product->image }}" class="card-img-top" alt="{{ $product->name }}">
-                    <div class="card-body">
-                        <h1 class="card-title">{{ $product->name }}</h1>
-                        <p class="card-text">{{ $product->description }}</p>
-                        <p class="card-text"><strong>Rp. {{ number_format($product->price, 0, ',', '.') }}</strong></p>
+        <h1>Shopping Cart</h1>
 
-                        <!-- Add to Cart Form -->
-                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
-                            @csrf
-                            <div class="mb-3">
-                                <label for="quantity" class="form-label">Quantity</label>
-                                <input type="number" class="form-control" id="quantity" name="quantity" value="1"
-                                    min="1" required>
-                            </div>
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <button type="submit" class="btn btn-success">Add to Cart</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Related Products and Back Button -->
-            <div class="col-md-4">
-                <!-- Back Button -->
-                <a href="{{ route('product') }}" class="btn btn-secondary">Back to Products</a>
-
-                <!-- Related Products -->
-                <h4 class="mb-3 mt-3">Related Products</h4>
-                <div class="row row-cols-1 row-cols-md-2 g-3">
-                    @foreach ($relatedProducts as $relatedProduct)
-                        <div class="col-md-6">
-                            <div class="card">
-                                <img src="{{ $relatedProduct->image }}" class="card-img-top"
-                                    alt="{{ $relatedProduct->name }}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ $relatedProduct->name }}</h5>
-                                    <p class="card-text">Rp. {{ number_format($relatedProduct->price, 0, ',', '.') }}
-                                    </p>
-                                    <a href="{{ route('product.show', $relatedProduct->id) }}"
-                                        class="btn btn-primary">View Details</a>
-                                </div>
-                            </div>
-                        </div>
+        @if ($cart && $cart->items->count())
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($cart->items as $item)
+                        <tr>
+                            <td>
+                                <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}"
+                                    class="img-thumbnail" style="width: 80px;">
+                                {{ $item->product->name }}
+                            </td>
+                            <td>
+                                <form action="{{ route('cart.update', $item->id) }}" method="POST"
+                                    class="form-inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="number" name="quantity" value="{{ $item->quantity }}"
+                                        class="form-control mr-2" min="1" required>
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </form>
+                            </td>
+                            <td>Rp. {{ number_format($item->product->price, 0, ',', '.') }}</td>
+                            <td>Rp. {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}</td>
+                            <td>
+                                <form action="{{ route('cart.remove', $item->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
                     @endforeach
+                </tbody>
+            </table>
+
+            <!-- Cart Summary -->
+            <div class="row mt-4">
+                <div class="col-md-8">
+                    <h4>Cart Summary</h4>
+                    <p>Total Items: {{ $cart->items->sum('quantity') }}</p>
+                    <p>Total Price: Rp.
+                        {{ number_format(
+                            $cart->items->sum(function ($item) {
+                                return $item->product->price * $item->quantity;
+                            }),
+                            0,
+                            ',',
+                            '.',
+                        ) }}
+                    </p>
+                </div>
+                <div class="col-md-4 text-right">
+                    <a href="" class="btn btn-success">Proceed to Checkout</a>
                 </div>
             </div>
-        </div>
+        @else
+            <p>Your cart is empty.</p>
+        @endif
     </div>
 
 
