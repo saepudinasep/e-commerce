@@ -16,13 +16,34 @@ class ProductsFactory extends Factory
      */
     public function definition(): array
     {
+        // Daftar nama alat musik dan alat elektronik
+        $musicalInstruments = [
+            'Piano', 'Gitar', 'Biola', 'Drum', 'Saksophone', 'Flute', 'Gong', 'Harmonika', 'Trumpet', 'Sitar'
+        ];
+
+        $electronicDevices = [
+            'Gitar Elektrik', 'Keyboard', 'Drum Elektrik', 'Synthesizer', 'Metronome', 'Audio Interface', 'Mixer', 'Monitort Speaker', 'Kamera', 'Microphone'
+        ];
+
+        // Gabungkan kedua daftar
+        $allNames = array_merge($musicalInstruments, $electronicDevices);
+
+        // Pilih nama alat musik atau alat elektronik secara acak
+        $instrumentName = $this->faker->randomElement($allNames);
+
+        // Format harga dalam Rupiah
+        $price = $this->faker->numberBetween(100000, 10000000);
+
+        // Generate rating antara 1.0 hingga 5.0
+        $rating = $this->faker->randomFloat(1, 1, 5);
+
         return [
-            'name' => $this->faker->word,
+            'name' => $instrumentName,
             'description' => $this->faker->sentence,
-            'price' => $this->faker->randomFloat(2, 1, 100),
+            'price' => $price,
             'stock' => $this->faker->numberBetween(1, 100),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'image' => $this->faker->imageUrl,
+            'rating' => $rating,
         ];
     }
 }

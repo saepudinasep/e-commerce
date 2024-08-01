@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', function () {
-    $products = Products::take(6)->get();
+    $products = Products::orderBy('rating', 'desc') // Mengurutkan berdasarkan rating, dari yang tertinggi
+        ->take(6) // Mengambil 6 produk teratas
+        ->get(); // Mengeksekusi query
     return view('home', compact('products'));
 });
