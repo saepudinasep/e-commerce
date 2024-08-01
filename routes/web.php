@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\RegisterController;
 use App\Models\Products;
 use Illuminate\Support\Facades\Route;
 
@@ -18,8 +19,13 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('login', [AuthController::class, 'login']);
+Route::middleware('guest')->group(function () {
+    Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [AuthController::class, 'login']);
+    Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('register', [RegisterController::class, 'register']);
+});
+
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/', function () {
