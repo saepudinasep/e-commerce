@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{{ asset('/assets/css/style.css') }}">
 </head>
 
 <body>
@@ -94,7 +95,7 @@
     <div class="container mt-4 mb-4">
         <div class="row">
             <div class="col-md-4">
-                <img src="img/home.jpg" alt="Guitar" srcset="" class="img-home" />
+                <img src="/assets/img/home.jpg" alt="Guitar" srcset="" class="img-home" />
             </div>
             <div class="col-md-8">
                 <h1 class="font-title">Mukicik</h1>
@@ -117,14 +118,14 @@
             @foreach ($products as $product)
                 <div class="col-md-2 mb-4 product-card">
                     <div class="card shadow-sm">
-                        <img src="assets/uploads/{{ $product->image }}" class="card-img-top img-product"
-                            alt="{{ $product->name }}">
+                        <img src="{{ $product->image }}" class="card-img-top img-product" alt="{{ $product->name }}">
                         <div class="card-body">
                             <a href="{{ route('product.show', $product->id) }}" class="text-decoration-none">
                                 <h5 class="card-title">{{ $product->name }}</h5>
                             </a>
                             {{-- <p class="card-text">{{ $product->CategoryName }}</p> --}}
-                            <p class="card-text color-star">{{ $product->rating }} <i class="bi bi-star-fill"></i></p>
+                            <p class="card-text color-star">{{ $product->rating }} <i class="bi bi-star-fill"></i>
+                            </p>
                             <p class="card-text">Rp. {{ number_format($product->price, 0, ',', '.') }}</p>
                         </div>
                     </div>
