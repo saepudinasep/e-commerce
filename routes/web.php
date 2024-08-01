@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Products;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+
 Route::get('/', function () {
-    return view('welcome');
+    $products = Products::take(6)->get();
+    return view('home', compact('products'));
 });
