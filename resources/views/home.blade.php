@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Warung Coding ! E-Commerce</title>
+    <title>Warung Coding | E-Commerce</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -65,8 +65,11 @@
                                 Hi, {{ Auth::user()->name }}
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                                <li>
+                                    <a class="dropdown-item" href="#"
+                                        onclick="event.preventDefault(); confirmLogout();">
+                                        Logout
+                                    </a>
                                 </li>
                             </ul>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -134,6 +137,14 @@
     <footer class="pt-3 mt-4 text-body-secondary border-top">
         <div class="container">&copy; 2016 - Mukicik</div>
     </footer>
+
+    <script>
+        function confirmLogout() {
+            if (confirm("Are you sure you want to logout?")) {
+                document.getElementById('logout-form').submit();
+            }
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
