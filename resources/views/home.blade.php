@@ -15,7 +15,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
         <div class="container">
-            <a class="navbar-brand" href="home.php">Mukicik</a>
+            <a class="navbar-brand" href="/">Mukicik</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -27,31 +27,42 @@
                         <a class="nav-link active" aria-current="page" href="home.php">Home</a>
                     </li>
                     @if (Auth::check())
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Product
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="">Insert</a></li>
-                                <li><a class="dropdown-item" href="">Update</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">Keranjang</a>
-                        </li>
+                        @php
+                            $userRole = Auth::user()->role;
+                        @endphp
+
+                        @if ($userRole === 'admin')
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Product
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="">Insert</a></li>
+                                    <li><a class="dropdown-item" href="">Update</a></li>
+                                </ul>
+                            </li>
+                        @elseif ($userRole === 'pelanggan')
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('product') }}">Product</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="">Keranjang</a>
+                            </li>
+                        @endif
                     @else
                         <li class="nav-item">
-                            <a class="nav-link" href="">Product</a>
+                            <a class="nav-link" href="{{ route('product') }}">Product</a>
                         </li>
                     @endif
+
                 </ul>
                 <ul class="navbar-nav d-flex">
                     @if (Auth::check())
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                Users Count: 1 | Hi, {{ Auth::user()->name }}
+                                Hi, {{ Auth::user()->name }}
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{ route('logout') }}"
@@ -106,7 +117,7 @@
                         <img src="assets/uploads/{{ $product->image }}" class="card-img-top img-product"
                             alt="{{ $product->name }}">
                         <div class="card-body">
-                            <a href="#" class="text-decoration-none">
+                            <a href="{{ route('product.show', $product->id) }}" class="text-decoration-none">
                                 <h5 class="card-title">{{ $product->name }}</h5>
                             </a>
                             {{-- <p class="card-text">{{ $product->CategoryName }}</p> --}}
