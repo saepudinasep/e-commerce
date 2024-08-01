@@ -45,6 +45,6 @@ Route::middleware(['auth'])->group(function () {
     // Keranjang Belanja
     Route::get('/cart', [CartsController::class, 'index'])->name('cart.index');
     Route::post('/cart/add/{productId}', [CartsController::class, 'add'])->name('cart.add');
-    Route::post('/cart/update/{itemId}', [CartsController::class, 'update'])->name('cart.update');
+    Route::patch('/cart/update/{itemId}', [CartsController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{itemId}', [CartsController::class, 'remove'])->name('cart.remove');
 });

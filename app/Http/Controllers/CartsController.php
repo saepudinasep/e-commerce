@@ -45,4 +45,25 @@ class CartsController extends Controller
         // Redirect dengan pesan sukses
         return redirect()->route('cart.index')->with('success', 'Product added to cart successfully!');
     }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:1'
+        ]);
+
+        $cartItem = Cart_Items::findOrFail($id);
+        $cartItem->quantity = $request->input('quantity');
+        $cartItem->save();
+
+        return redirect()->route('cart.index')->with('success', 'Cart updated successfully');
+    }
+
+    public function remove($id)
+    {
+        $cartItem = Cart_Items::findOrFail($id);
+        $cartItem->delete();
+
+        return redirect()->route('cart.index')->with('success', 'Item removed from cart');
+    }
 }
