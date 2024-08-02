@@ -53,6 +53,18 @@
                                 <a class="nav-link active" aria-current="page"
                                     href="{{ route('cart.index') }}">Keranjang</a>
                             </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Pesanan
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ route('order.belum-bayar') }}">Belum Bayar</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ route('order.dikemas') }}">Dikemas</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('order.dikirim') }}">Dikirim</a></li>
+                                </ul>
+                            </li>
                         @endif
                     @else
                         <li class="nav-item">
@@ -159,7 +171,7 @@
                     </p>
                 </div>
                 <div class="col-md-4 text-right">
-                    <a href="" class="btn btn-success">Proceed to Checkout</a>
+                    <a href="{{ route('checkout.index') }}" class="btn btn-success">Proceed to Checkout</a>
                 </div>
             </div>
         @else

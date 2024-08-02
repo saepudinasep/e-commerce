@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartsController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\RegisterController;
 use App\Models\Products;
@@ -47,4 +49,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cart/add/{productId}', [CartsController::class, 'add'])->name('cart.add');
     Route::patch('/cart/update/{itemId}', [CartsController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{itemId}', [CartsController::class, 'remove'])->name('cart.remove');
+
+    Route::get('/belum-bayar', [OrdersController::class, 'belum_bayar'])->name('order.belum-bayar');
+    Route::get('/dikemas', [OrdersController::class, 'dikemas'])->name('order.dikemas');
+    Route::get('/dikirim', [OrdersController::class, 'dikirim'])->name('order.dikirim');
+
+    // Checkout
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
 });

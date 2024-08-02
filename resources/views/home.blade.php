@@ -50,7 +50,19 @@
                                 <a class="nav-link" href="{{ route('product') }}">Product</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="">Keranjang</a>
+                                <a class="nav-link" href="{{ route('cart.index') }}">Keranjang</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Pesanan
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ route('order.belum-bayar') }}">Belum Bayar</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ route('order.dikemas') }}">Dikemas</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('order.dikirim') }}">Dikirim</a></li>
+                                </ul>
                             </li>
                         @endif
                     @else
@@ -94,33 +106,37 @@
     </nav>
     <!-- End Navbar -->
 
-    <div class="container mt-4 mb-4">
-        <div class="row">
-            <div class="col-md-4">
-                <img src="/assets/img/home.jpg" alt="Guitar" srcset="" class="img-home" />
-            </div>
-            <div class="col-md-8">
-                <h1 class="font-title">Mukicik</h1>
-                <h3>
-                    An innovative music selling store with competitive prices <br />
-                    It's never this cheap to shop in music !
-                </h3>
-                <a href="register.php" class="btn btn-primary btn-lg" type="button">
-                    Be a New Member
-                </a>
+    @if (Auth::check())
+    @else
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="/assets/img/home.jpg" alt="Guitar" srcset="" class="img-home" />
+                </div>
+                <div class="col-md-8">
+                    <h1 class="font-title">Mukicik</h1>
+                    <h3>
+                        An innovative music selling store with competitive prices <br />
+                        It's never this cheap to shop in music !
+                    </h3>
+                    <a href="{{ route('register') }}" class="btn btn-primary btn-lg" type="button">
+                        Be a New Member
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 
     <!-- Menampilkan data product tertinggi -->
-    <div class="container">
+    <div class="container mt-5">
         <h2 class="mb-3">Top 6 Products</h2>
         <!-- Product cards -->
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="productContainer">
             @foreach ($products as $product)
                 <div class="col-md-2 mb-4 product-card">
                     <div class="card shadow-sm">
-                        <img src="{{ $product->image }}" class="card-img-top img-product" alt="{{ $product->name }}">
+                        <img src="{{ $product->image }}" class="card-img-top img-product"
+                            alt="{{ $product->name }}">
                         <div class="card-body">
                             <a href="{{ route('product.show', $product->id) }}" class="text-decoration-none">
                                 <h5 class="card-title">{{ $product->name }}</h5>
