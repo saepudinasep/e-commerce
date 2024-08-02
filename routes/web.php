@@ -50,6 +50,9 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/cart/update/{itemId}', [CartsController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{itemId}', [CartsController::class, 'remove'])->name('cart.remove');
 
+    // Order
+    Route::get('/order/{id}', [OrdersController::class, 'show'])->name('order.show');
+    Route::get('/order/status/{id}', [OrdersController::class, 'status'])->name('order.status');
     Route::get('/belum-bayar', [OrdersController::class, 'belum_bayar'])->name('order.belum-bayar');
     Route::get('/dikemas', [OrdersController::class, 'dikemas'])->name('order.dikemas');
     Route::get('/dikirim', [OrdersController::class, 'dikirim'])->name('order.dikirim');
