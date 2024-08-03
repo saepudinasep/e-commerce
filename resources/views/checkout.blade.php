@@ -110,7 +110,7 @@
 
     <div class="container mt-5">
         <h1>Checkout</h1>
-        @if ($cart && $cart->items->count())
+        @if ($order && $order->count())
             <table class="table">
                 <thead>
                     <tr>
@@ -121,30 +121,40 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($cart->items as $item)
+                    @foreach ($order as $item)
                         <tr>
                             <td>{{ $item->product->name }}</td>
                             <td>{{ $item->quantity }}</td>
                             <td>Rp. {{ number_format($item->product->price, 0, ',', '.') }}</td>
                             <td>Rp.
-                                {{ number_format(
-                                    $cart->items->sum(function ($item) {
-                                        return $item->product->price * $item->quantity;
-                                    }),
-                                    0,
-                                    ',',
-                                    '.',
-                                ) }}
+                                {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            <div class="text-right">
-                <form action="{{ route('checkout.process') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-success">Confirm Order</button>
-                </form>
+
+            <!-- Total Summary -->
+            <div class="row mt-4">
+                <div class="col-md-10">
+                    <p>Total Items: {{ $order->sum('quantity') }}</p>
+                    <p>Total Price: Rp.
+                        {{ number_format(
+                            $order->sum(function ($item) {
+                                return $item->product->price * $item->quantity;
+                            }),
+                            0,
+                            ',',
+                            '.',
+                        ) }}
+                    </p>
+                </div>
+                <div class="col-md-2 text-right">
+                    <form action="{{ route('checkout.process') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-success">Pay</button>
+                    </form>
+                </div>
             </div>
         @else
             <p>Your cart is empty.</p>

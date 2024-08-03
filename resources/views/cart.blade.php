@@ -171,7 +171,7 @@
                     </p>
                 </div>
                 <div class="col-md-4 text-right">
-                    <a href="{{ route('checkout.index') }}" class="btn btn-success">Proceed to Checkout</a>
+                    <a href="{{ route('checkout') }}" class="btn btn-success">Checkout</a>
                 </div>
             </div>
         @else

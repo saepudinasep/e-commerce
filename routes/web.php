@@ -58,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dikirim', [OrdersController::class, 'dikirim'])->name('order.dikirim');
 
     // Checkout
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::get('/checkout/{id}', [CheckoutController::class, 'show'])->name('checkout.show');
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
 });

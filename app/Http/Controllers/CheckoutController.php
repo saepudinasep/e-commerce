@@ -13,9 +13,16 @@ class CheckoutController extends Controller
     public function index()
     {
         $cart = Carts::where('user_id', Auth::id())->first();
+
+        if (!$cart || $cart->items->isEmpty()) {
+            return redirect()->route('cart.index')->with('message', 'Your cart is empty');
+        }
+
         $order = new Orders();
         $order->user_id = Auth::id();
-        $order->total_amount = $cart->items->sum(fn ($item) => $item->product->price * $item->quantity);
+        $order->total_amount = $cart->items->sum(function ($item) {
+            return $item->product->price * $item->quantity;
+        });
         $order->status = 'pending';
         $order->save();
 
@@ -31,6 +38,13 @@ class CheckoutController extends Controller
         // Kosongkan keranjang
         $cart->items()->delete();
 
-        return view('checkout', compact('cart'));
+        return redirect()->route('checkout.show', $order->id);
+    }
+
+    public function show($id)
+    {
+        $order = Order_items::where('order_id', $id)->get();
+
+        return view('checkout', compact('order'));
     }
 }

@@ -126,7 +126,9 @@
                             <td>{{ $order->created_at->format('l') }}</td>
                             <td>{{ $order->created_at->format('d F Y') }}</td>
                             <td>Rp. {{ number_format($order->total_amount, 0, ',', '.') }}</td>
-                            <td><a href="{{ }}" class="btn btn-success">View Detail</a></td>
+                            <td><a href="{{ route('checkout.show', $order->id) }}" class="btn btn-success">View
+                                    Detail</a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
