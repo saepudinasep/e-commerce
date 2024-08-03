@@ -14,6 +14,7 @@ class Orders extends Model
         'user_id',
         'total_amount',
         'status',
+        'snapToken',
         'va_number',
         'created_at',
         'updated_at'

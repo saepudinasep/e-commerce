@@ -25,3 +25,17 @@
     color: blue; /* Mengubah warna teks menjadi biru saat dihover */
     text-decoration: none; /* Menambah garis bawah saat dihover */
 }
+
+/* #snap-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Pastikan z-index cukup tinggi untuk berada di atas elemen lain */
+    width: 80%; /* Anda bisa menyesuaikan ukuran lebar */
+    max-width: 600px; /* Maksimal lebar yang bisa diterima */
+    background-color: white; /* Tambahkan latar belakang putih agar terlihat */
+    padding: 20px; /* Tambahkan padding untuk spasi di sekitar konten */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Tambahkan shadow untuk efek 3D */
+    display: none; /* Sembunyikan secara default */
+} */
