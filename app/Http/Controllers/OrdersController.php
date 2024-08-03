@@ -14,9 +14,10 @@ class OrdersController extends Controller
         return "show";
     }
 
-    public function status()
+    public function invoice($id)
     {
-        return "status";
+        $order = Orders::findOrFail($id);
+        return view('invoice', compact('order'));
     }
 
     public function belum_bayar()

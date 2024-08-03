@@ -113,7 +113,7 @@
 
 
     <div class="container mt-5">
-        <h1>Checkout</h1>
+        <h1>Detail Orders</h1>
         @if ($order && $order->count())
             <table class="table">
                 <thead>
@@ -153,21 +153,10 @@
                         ) }}
                     </p>
                 </div>
-                <div class="col-md-2 text-right">
-                    {{-- <form action="{{ route('checkout.process') }}" method="POST"> --}}
-                    {{-- @csrf --}}
-                    {{-- <input type="hidden" name="order_id" value="{{ $order->id }}"> --}}
-                    <button class="btn btn-success" id="pay-button">Pay</button>
-                    {{-- </form> --}}
-
-                </div>
             </div>
         @else
             <p>Your cart is empty.</p>
         @endif
-
-        <!-- @TODO: You can add the desired ID as a reference for the embedId parameter. -->
-        <div id="snap-container"></div>
     </div>
 
 
@@ -190,38 +179,6 @@
         @endif
     </script>
 
-
-    <script type="text/javascript">
-        // For example trigger on button clicked, or any time you need
-        var payButton = document.getElementById('pay-button');
-        payButton.addEventListener('click', function() {
-            // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token.
-            // Also, use the embedId that you defined in the div above, here.
-            window.snap.embed('{{ $order->snapToken }}', {
-                embedId: 'snap-container',
-                onSuccess: function(result) {
-                    /* You may add your own implementation here */
-                    // alert("payment success!");
-                    window.location.href = '/invoice/{{ $order->id }}';
-                    console.log(result);
-                },
-                onPending: function(result) {
-                    /* You may add your own implementation here */
-                    alert("wating your payment!");
-                    console.log(result);
-                },
-                onError: function(result) {
-                    /* You may add your own implementation here */
-                    alert("payment failed!");
-                    console.log(result);
-                },
-                onClose: function() {
-                    /* You may add your own implementation here */
-                    alert('you closed the popup without finishing the payment');
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>

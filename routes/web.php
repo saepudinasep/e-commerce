@@ -52,7 +52,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Order
     Route::get('/order/{id}', [OrdersController::class, 'show'])->name('order.show');
-    Route::get('/order/status/{id}', [OrdersController::class, 'status'])->name('order.status');
+    // Route::get('/order/status/{id}', [OrdersController::class, 'status'])->name('order.status');
+    Route::get('/invoice/{id}', [OrdersController::class, 'invoice']);
     Route::get('/belum-bayar', [OrdersController::class, 'belum_bayar'])->name('order.belum-bayar');
     Route::get('/dikemas', [OrdersController::class, 'dikemas'])->name('order.dikemas');
     Route::get('/dikirim', [OrdersController::class, 'dikirim'])->name('order.dikirim');
