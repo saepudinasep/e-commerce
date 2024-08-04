@@ -19,8 +19,8 @@ E-Commerce Checkout System adalah aplikasi berbasis web yang memungkinkan penggu
 1.  **Clone Repository**
 
     ```bash
-    git clone https://github.com/username/project-repo.git
-    cd project-repo
+    git clone https://github.com/saepudinasep/e-commerce.git
+    cd e-commerce
     ```
 
 2.  **Instalasi Dependensi**
