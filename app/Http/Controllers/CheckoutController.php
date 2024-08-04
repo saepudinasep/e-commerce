@@ -7,6 +7,7 @@ use App\Models\Order_Items;
 use App\Models\Orders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
 {
@@ -24,6 +25,7 @@ class CheckoutController extends Controller
             return $item->product->price * $item->quantity;
         });
         $order->status = 'pending';
+        $order->id = random_int(100, 999); // Generate random unique order_id
         $order->save();
 
         foreach ($cart->items as $item) {

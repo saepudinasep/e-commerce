@@ -32,4 +32,10 @@ class Orders extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // Define the relationship with Webhooks
+    public function webhooks()
+    {
+        return $this->hasMany(Webhooks::class, 'order_id');
+    }
 }

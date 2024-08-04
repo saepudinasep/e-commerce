@@ -29,7 +29,9 @@ class OrdersController extends Controller
 
     public function dikemas()
     {
-        return "dikemas";
+        $orders = Orders::where('status', '=', 'completed')->get();
+        return view('dikemas', compact('orders'));
+        // return "dikemas";
     }
 
     public function dikirim()

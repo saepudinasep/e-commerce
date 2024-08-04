@@ -32,7 +32,7 @@ class ProductsFactory extends Factory
         $instrumentName = $this->faker->randomElement($allNames);
 
         // Format harga dalam Rupiah
-        $price = $this->faker->numberBetween(100000, 10000000);
+        $price = $this->faker->numberBetween(100000, 1000000);
 
         // Generate rating antara 1.0 hingga 5.0
         $rating = $this->faker->randomFloat(1, 1, 5);

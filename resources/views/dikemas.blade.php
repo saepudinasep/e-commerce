@@ -5,10 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- @TODO: replace SET_YOUR_CLIENT_KEY_HERE with your client key -->
-    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="{{ config('midtrans.client_key') }}"></script>
-    <!-- Note: replace with src="https://app.midtrans.com/snap/snap.js" for Production environment -->
     <title>Carts | Warung Coding</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
@@ -113,54 +109,34 @@
 
 
     <div class="container mt-5">
-        <h1>Detail Orders</h1>
-        <h2>Id Order : {{ $order->id }}</h2>
-        <h2>Status : Dikemas</h2>
-        @if ($order && $order->count())
+        <h1>Dikemas</h1>
+        @if ($orders && $orders->count())
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
+                        <th>Hari</th>
+                        <th>Tanggal</th>
                         <th>Total</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($order->items as $item)
+                    @foreach ($orders as $order)
                         <tr>
-                            <td>{{ $item->product->name }}</td>
-                            <td>{{ $item->quantity }}</td>
-                            <td>Rp. {{ number_format($item->product->price, 0, ',', '.') }}</td>
-                            <td>Rp.
-                                {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}
+                            <td>{{ $order->created_at->format('l') }}</td>
+                            <td>{{ $order->created_at->format('d F Y') }}</td>
+                            <td>Rp. {{ number_format($order->total_amount, 0, ',', '.') }}</td>
+                            <td><a href="/invoice/{{ $order->id }}" class="btn btn-success">View
+                                    Detail</a>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-
-            <!-- Total Summary -->
-            <div class="row mt-4">
-                <div class="col-md-10">
-                    <p>Total Items: {{ $order->items->sum('quantity') }}</p>
-                    <p>Total Price: Rp.
-                        {{ number_format(
-                            $order->items->sum(function ($item) {
-                                return $item->product->price * $item->quantity;
-                            }),
-                            0,
-                            ',',
-                            '.',
-                        ) }}
-                    </p>
-                </div>
-            </div>
         @else
             <p>Your cart is empty.</p>
         @endif
     </div>
-
 
 
     <footer class="pt-3 mt-4 text-body-secondary border-top">
@@ -180,7 +156,6 @@
             toastr.error("{{ session('error') }}");
         @endif
     </script>
-
 </body>
 
 </html>
